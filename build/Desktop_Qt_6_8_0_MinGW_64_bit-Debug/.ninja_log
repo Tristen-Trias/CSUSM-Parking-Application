@@ -1,0 +1,15 @@
+# ninja log v6
+7051	7521	7542907986328502	CSUSM_Parking.exe	336d9f2393f4bc9
+888	3519	7536830762257568	CMakeFiles/CSUSM_Parking.dir/CSUSM_Parking_autogen/mocs_compilation.cpp.obj	bf7796f375e54759
+139	505	7542907917208395	CSUSM_Parking_autogen/timestamp	8810e7b414c420fa
+139	505	7542907917208395	C:/Users/Tristen/Documents/CSUSM_Parking_Application/CSUSM_Parking/build/Desktop_Qt_6_8_0_MinGW_64_bit-Debug/CSUSM_Parking_autogen/timestamp	8810e7b414c420fa
+139	505	7542907917208395	CSUSM_Parking_autogen/mocs_compilation.cpp	8810e7b414c420fa
+139	505	7542907917208395	C:/Users/Tristen/Documents/CSUSM_Parking_Application/CSUSM_Parking/build/Desktop_Qt_6_8_0_MinGW_64_bit-Debug/CSUSM_Parking_autogen/mocs_compilation.cpp	8810e7b414c420fa
+893	3557	7536830762307561	CMakeFiles/CSUSM_Parking.dir/main.cpp.obj	786f2aa94c33211f
+506	7051	7542907920805644	CMakeFiles/CSUSM_Parking.dir/mainwindow.cpp.obj	bf6d03cf4a0b4239
+20	216	7543645375490592	CSUSM_Parking_autogen/timestamp	8810e7b414c420fa
+20	216	7543645375490592	CSUSM_Parking_autogen/mocs_compilation.cpp	8810e7b414c420fa
+20	216	7543645375490592	C:/Users/Tristen/Documents/CSUSM_Parking_Application/CSUSM_Parking/build/Desktop_Qt_6_8_0_MinGW_64_bit-Debug/CSUSM_Parking_autogen/timestamp	8810e7b414c420fa
+20	216	7543645375490592	C:/Users/Tristen/Documents/CSUSM_Parking_Application/CSUSM_Parking/build/Desktop_Qt_6_8_0_MinGW_64_bit-Debug/CSUSM_Parking_autogen/mocs_compilation.cpp	8810e7b414c420fa
+216	2994	7543645377553149	CMakeFiles/CSUSM_Parking.dir/mainwindow.cpp.obj	bf6d03cf4a0b4239
+2994	3245	7543645405285540	CSUSM_Parking.exe	336d9f2393f4bc9
