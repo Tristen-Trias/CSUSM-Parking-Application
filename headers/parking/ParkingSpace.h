@@ -13,20 +13,20 @@ class ParkingSpace : public Parking {
     public:
         // Constructors and Destructors
         ParkingSpace();
-        ParkingSpace(string section);
+        ParkingSpace(string section, int id);
         ~ParkingSpace();
 
         // Getters
         string get_section();
-        int get_num_spots();
+        int get_id();
         User* get_user();
         time_t get_arrival_time();
         time_t get_departure_time();
         bool is_occupied();
 
         // Setters
-        string set_section(string section);
-        void set_num_spots(int num_spots);
+        void set_section(string section);
+        void set_id(int id);
         void set_user(User* user);
         void set_arrival_time(time_t arrival_time);
         void set_departure_time(time_t departure_time);
@@ -35,10 +35,9 @@ class ParkingSpace : public Parking {
         void update();
 
     private:
-        vector<Parking*> parking_spots;
         string name;
+        int id;
         bool occupied;
-        int num_spots;
 
         User* user;
         time_t arrival_time;

@@ -5,8 +5,6 @@
 #include <string>
 #include <vector>
 
-#include "../users/User.h"
-
 using namespace std;
 
 class Parking {

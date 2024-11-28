@@ -1,4 +1,4 @@
-#include "Visitor.h"
+#include "../../headers/users/Visitor.h"
 
 // Constructors
 Visitor::Visitor() {

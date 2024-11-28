@@ -1,4 +1,4 @@
-#include "ParkingLot.h"
+#include "../../headers/parking/ParkingLot.h"
 
 // Constructors
 ParkingLot::ParkingLot(string lot) {
@@ -20,7 +20,7 @@ int ParkingLot::get_num_sections() {
 }
 
 // Setters
-string ParkingLot::set_lot(string lot) {
+void ParkingLot::set_lot(string lot) {
     this->name = lot;
 }
 
@@ -42,4 +42,8 @@ void ParkingLot::add(Parking* section) {
 
 Parking* ParkingLot::get_parking_section(int section) {
     return this->parking_sections[section];
+}
+
+vector<Parking*> ParkingLot::get_parking_sections() {
+    return this->parking_sections;
 }

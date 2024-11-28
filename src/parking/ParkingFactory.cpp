@@ -1,8 +1,8 @@
-#include "ParkingFactory.h"
+#include "../../headers/parking/ParkingFactory.h"
 
 void ParkingFactory::create_parking_lot(string name, int sections) {
     if (name == "student") {
-        Parking* student_parking = new StudentParking();
+
         cout << "Creating a student parking lot with " << sections << " sections" << endl;
     } else if (name == "faculty") {
         cout << "Creating a faculty parking lot with " << sections << " sections" << endl;

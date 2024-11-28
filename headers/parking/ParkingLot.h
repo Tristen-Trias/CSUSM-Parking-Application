@@ -18,7 +18,7 @@ class ParkingLot : public Parking {
         int get_num_sections();
 
         // Setters
-        string set_lot(string lot);
+        void set_lot(string lot);
         void set_num_sections(int num_sections);
 
         // Other Methods

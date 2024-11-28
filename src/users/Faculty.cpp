@@ -1,4 +1,4 @@
-#include "Faculty.h"
+#include "../../headers/users/Faculty.h"
 
 // Constructors
 Faculty::Faculty() {

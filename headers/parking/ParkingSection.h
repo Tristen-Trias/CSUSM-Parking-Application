@@ -5,19 +5,20 @@
 
 using namespace std;
 
-class ParkingSpace : public Parking {
+class ParkingSection : public Parking {
 
     public:
         // Constructors and Destructors
-        ParkingSpace(string section);
-        ~ParkingSpace();
+        ParkingSection();
+        ParkingSection(string section);
+        ~ParkingSection();
 
         // Getters
         string get_section();
         int get_num_spots();
 
         // Setters
-        string set_section(string section);
+        void set_section(string section);
         void set_num_spots(int num_spots);
 
         // Other Methods

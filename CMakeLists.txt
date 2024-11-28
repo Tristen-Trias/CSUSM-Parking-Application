@@ -23,6 +23,8 @@ if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)
     qt_add_executable(CSUSM_Parking
         MANUAL_FINALIZATION
         ${PROJECT_SOURCES}
+
+        headers/parking/AdminParking.h headers/parking/FacultyParking.h headers/parking/Parking.h headers/parking/ParkingFactory.h headers/parking/ParkingLot.h headers/parking/ParkingSection.h headers/parking/ParkingSpace.h headers/parking/StudentParking.h headers/parking/VisitorParking.h headers/users/Admin.h headers/users/Faculty.h headers/users/Student.h headers/users/User.h headers/users/Visitor.h src/parking/Parking.cpp src/parking/ParkingFactory.cpp src/parking/ParkingLot.cpp src/parking/ParkingSection.cpp src/parking/ParkingSpace.cpp src/users/Admin.cpp src/users/Faculty.cpp src/users/Student.cpp src/users/User.cpp src/users/Visitor.cpp
     )
 # Define target properties for Android with Qt 6 as:
 #    set_property(TARGET CSUSM_Parking APPEND PROPERTY QT_ANDROID_PACKAGE_SOURCE_DIR

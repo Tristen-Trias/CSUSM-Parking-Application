@@ -4,6 +4,7 @@
 #include <string>
 
 #include "Parking.h"
+#include "../users/User.h"
 
 using namespace std;
 

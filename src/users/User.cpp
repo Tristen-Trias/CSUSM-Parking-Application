@@ -1,18 +1,19 @@
-#include "User.h"
+#include "../../headers/users/User.h"
 
 // Constructors
 User::User() {
-    first_name = "";
-    last_name = "";
-    uID = 0;
-    registered = false;
-    rating = 0.0;
+    this->first_name = "";
+    this->last_name = "";
+    this->uID = 0;
+    this->registered = false;
+    this->rating = 0.0;
 }
 
-User::User(string first_name, string last_name, int uID, bool registered, double rating) {
+User::User(string first_name, string last_name, int uID, int user_type, bool registered, double rating) {
     this->first_name = first_name;
     this->last_name = last_name;
     this->uID = uID;
+    this->user_type = user_type;
     this->registered = registered;
     this->rating = rating;
 }
@@ -23,6 +24,11 @@ User::~User() {
 }
 
 // Getters
+
+User* User::get_user() {
+    return this;
+}
+
 bool User::is_registered() {
     return registered;
 }
@@ -43,10 +49,12 @@ int User::get_uID() {
     return uID;
 }
 
-int User::get_current_parking() {
-    // Placeholder
-    cout << "Getting current parking" << endl;
-    return 0;
+Parking* User::get_current_parking() {
+    return current;
+}
+
+vector<Parking*> User::get_reserved_parking() {
+    return parking;
 }
 
 int User::get_user_type() {
@@ -73,6 +81,10 @@ void User::set_last_name(string last_name) {
 
 void User::set_uID(int uID) {
     this->uID = uID;
+}
+
+void User::set_current_parking(Parking* current) {
+    this->current = current;
 }
 
 // Other Methods
