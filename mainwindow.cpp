@@ -58,8 +58,12 @@ void MainWindow::update_user_table() {
     for (int i = 0; i < current_parking.size(); i++) {
         model->setItem(i, 0, new QStandardItem(QString::fromStdString(current_parking[i].getLot())));
         model->setItem(i, 1, new QStandardItem(QString::number(current_parking[i].getSpaceNumber())));
-        model->setItem(i, 2, new QStandardItem(QString::number(current_parking[i].getReservationStartTime())));
-        model->setItem(i, 3, new QStandardItem(QString::number(current_parking[i].getReservationEndTime())));
+
+        QTime start = QTime(current_parking[i].getReservationStartTime(), 0, 0);
+        QTime end = QTime(current_parking[i].getReservationEndTime(), 0, 0);
+
+        model->setItem(i, 2, new QStandardItem(start.toString()));
+        model->setItem(i, 3, new QStandardItem(end.toString()));
     }
 
     QStandardItemModel* list = new QStandardItemModel(lots.size(), 2, this);
@@ -99,8 +103,6 @@ void MainWindow::fill_test_information() {
 }
 
 void MainWindow::set_user_information(User* user) {
-    //Get the user information from login and set it
-
     this->current_user = user;
 
     string s = user->get_first_name() + " " + user->get_last_name();
@@ -115,7 +117,6 @@ void MainWindow::set_user_information(User* user) {
     ui->rating_label->setText(rating);
 
     get_user_parking();
-    //Set user information
 }
 
 void MainWindow::get_user_parking() {
@@ -141,10 +142,6 @@ User* MainWindow::get_user(int uID) {
     }
     return nullptr;
 }
-
-// void MainWindow::add_parking(ParkingSpace* parking) {
-//     this->current_parking.push_back(parking);
-// }
 
 void MainWindow::update_reservation_table() {
 
@@ -216,6 +213,12 @@ void MainWindow::on_reserve_button_clicked() {
     //Check if spot is still available
     string temp = lots[selected_lot].getLotName() + to_string(empty_parking[selected_row].getSpaceNumber());
     QString s = QString::fromStdString(temp);
+
+    QString start = ui->start_time_input->time().toString();
+    start += " - " + ui->end_time_input->time().toString();
+
+    ui->confirmation_time_label->setText(start);
+
     ui->selected_parking_label->setText(s);
     ui->stackedWidget->setCurrentWidget(ui->confirmation);
 }

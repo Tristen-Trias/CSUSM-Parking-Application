@@ -4,13 +4,12 @@
 #include <string>
 using namespace std;
 
-class Parking
-{
- public: 
-    virtual ~Parking(){} // Parking deconstructor
-    virtual void display() = 0; //  Abstract display fuction, will be overidden through Parkinglot and Parkingspace hiles
-  //  virtual string getName() const = 0;  
-
+class Parking {
+   public:
+    virtual ~Parking() {}        // Parking deconstructor
+    virtual void display() = 0;  //  Abstract display fuction, will be overidden
+                                 //  through Parkinglot and Parkingspace hiles
+                                 //  virtual string getName() const = 0;
 };
 
 #endif
@@ -21,13 +20,12 @@ class Parking
 #include <string>
 using namespace std;
 
-class Parking
-{
- public: 
-    virtual ~Parking(){} // Parking deconstructor
-    virtual void display() = 0; //  Abstract display fuction, will be overidden through Parkinglot and Parkingspace hiles
-  //  virtual string getName() const = 0;  
-
+class Parking {
+   public:
+    virtual ~Parking() {}        // Parking deconstructor
+    virtual void display() = 0;  //  Abstract display fuction, will be overidden
+                                 //  through Parkinglot and Parkingspace hiles
+                                 //  virtual string getName() const = 0;
 };
 
 #endif
