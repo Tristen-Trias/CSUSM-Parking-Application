@@ -15,12 +15,29 @@ MainWindow::~MainWindow() {
 
 void MainWindow::onStart() {
     setImage();
+    ui_checks();
+
+    this->fill_test_information();
+}
+
+void MainWindow::ui_checks() {
     ui->date_edit->setDate(QDate::currentDate());
     ui->stackedWidget->setCurrentWidget(ui->login);
     ui->invalid_time_label->setVisible(false);
     ui->success_label->setVisible(false);
     ui->invalid_login_label->setVisible(false);
-    this->fill_test_information();
+    ui->reservations_table->verticalHeader()->hide();
+
+
+    QTime* minTime = new QTime(7, 0, 0);
+    QTime* maxTime = new QTime(23, 0, 0);
+
+    ui->start_time_input->setMinimumTime(*minTime);
+    ui->end_time_input->setMinimumTime(*maxTime);
+
+    ui->available_list->verticalHeader()->hide();
+    ui->available_list->setSelectionBehavior(QAbstractItemView::SelectRows);
+    ui->available_list->setSelectionMode(QAbstractItemView::SingleSelection);
 }
 
 void MainWindow::setImage() {
@@ -30,19 +47,29 @@ void MainWindow::setImage() {
     ui->csusm_logo->setScaledContents(true);
 }
 
-void MainWindow::tempList() { // adds temporary data to the table
-    QStandardItemModel *model = new QStandardItemModel(current_parking.size(), 3, this);
+void MainWindow::update_user_table() {
+    QStandardItemModel *model = new QStandardItemModel(current_parking.size(), 4, this);
     for (int i = 0; i < users.size(); i++) {
         ui->reservations_table->setModel(model);
     }
 
-    model->setHorizontalHeaderLabels(QStringList() << "Lot" << "Space Number" << "End Time");
+    model->setHorizontalHeaderLabels(QStringList() << "Lot" << "Space Number" << "Start Time" << "End Time");
 
     for (int i = 0; i < current_parking.size(); i++) {
         model->setItem(i, 0, new QStandardItem(QString::fromStdString(current_parking[i].getLot())));
         model->setItem(i, 1, new QStandardItem(QString::number(current_parking[i].getSpaceNumber())));
-        model->setItem(i, 2, new QStandardItem(QString::number(current_parking[i].getReservationEndTime())));
+        model->setItem(i, 2, new QStandardItem(QString::number(current_parking[i].getReservationStartTime())));
+        model->setItem(i, 3, new QStandardItem(QString::number(current_parking[i].getReservationEndTime())));
     }
+
+    QStandardItemModel* list = new QStandardItemModel(lots.size(), 2, this);
+    ui->lot_box_input->setModel(list);
+
+    for (int i = 0; i < lots.size(); i++) {
+        list->setItem(i, 0, new QStandardItem(QString::fromStdString(lots[i].getLotName())));
+        list->setItem(i, 1, new QStandardItem(QString::number(lots[i].countEmptySpaces())));
+    }
+
 }
 
 void MainWindow::fill_test_information() {
@@ -59,13 +86,16 @@ void MainWindow::fill_test_information() {
 
     ParkingLot A = factory->createParkingLot("A", 10);
     ParkingLot B = factory->createParkingLot("B", 20);
+    ParkingLot C = factory->createParkingLot("C", 15);
+
     lots.push_back(A);
     lots.push_back(B);
+    lots.push_back(C);
 
-    lots[0].reserveSpace(users[0]->get_uID(), 1, 1, 4);
-    lots[1].reserveSpace(users[0]->get_uID(), 1, 2, 5);
-    lots[0].reserveSpace(users[0]->get_uID(), 2, 3, 6);
-    lots[1].reserveSpace(users[0]->get_uID(), 2, 4, 7);
+    lots[1].reserveSpace(users[0]->get_uID(), 4, 2, 5);
+    lots[1].reserveSpace(users[0]->get_uID(), 6, 4, 7);
+    lots[1].reserveSpace(users[0]->get_uID(), 7, 4, 7);
+    lots[1].reserveSpace(users[0]->get_uID(), 8, 4, 7);
 }
 
 void MainWindow::set_user_information(User* user) {
@@ -84,14 +114,19 @@ void MainWindow::set_user_information(User* user) {
     ui->type_label->setText(type);
     ui->rating_label->setText(rating);
 
+    get_user_parking();
+    //Set user information
+}
+
+void MainWindow::get_user_parking() {
+    current_parking.clear();
     for (int i = 0; i < lots.size(); i++) {
         for (int j = 0; j < lots[i].getSpaces().size(); j++) {
-            if (lots[i].getSpaces()[j].getUserID() == user->get_uID()) {
+            if (lots[i].getSpaces()[j].getUserID() == current_user->get_uID()) {
                 this->current_parking.push_back(lots[i].getSpaces()[j]);
             }
         }
     }
-    //Set user information
 }
 
 void MainWindow::add_user(User* user) {
@@ -111,17 +146,23 @@ User* MainWindow::get_user(int uID) {
 //     this->current_parking.push_back(parking);
 // }
 
-void MainWindow::fill_user_table() {
-    tempList();
-}
-
-
 void MainWindow::update_reservation_table() {
 
 }
 
-void MainWindow::update_available_table() {
+void MainWindow::update_available_table(int index) {
+    vector<ParkingSpace> empty = lots[index].getEmptySpaces();
+    QStandardItemModel* model = new QStandardItemModel(empty.size(), 2, this);
+    ui->available_list->setModel(model);
 
+    model->setHorizontalHeaderLabels(QStringList() << "Lot" << "Space Number");
+
+    for (int i = 0; i < empty.size(); i++) {
+        model->setItem(i, 0, new QStandardItem(QString::fromStdString(empty[i].getLot())));
+        model->setItem(i, 1, new QStandardItem(QString::number(empty[i].getSpaceNumber())));
+    }
+
+    this->empty_parking = empty;
 }
 
 
@@ -139,7 +180,7 @@ void MainWindow::on_login_button_clicked() {
 
     if (user) {
         this->set_user_information(user);
-        fill_user_table();
+        update_user_table();
         ui->stackedWidget->setCurrentWidget(ui->home);
     } else {
         ui->invalid_login_label->setVisible(true);
@@ -150,7 +191,7 @@ void MainWindow::on_login_button_clicked() {
 void MainWindow::on_new_reservation_button_clicked() {
     //update parking lot information
     //fill_reservation_table();
-    this->update_available_table(1);
+    this->update_available_table(0);
     ui->stackedWidget->setCurrentWidget(ui->search);
 }
 
@@ -159,9 +200,9 @@ void MainWindow::on_back_home_clicked() {
 }
 
 void MainWindow::on_logout_button_clicked() {
-    //Delete all information
     current_user = nullptr;
     current_parking.clear();
+    ui_checks();
     ui->stackedWidget->setCurrentWidget(ui->login);
 }
 
@@ -173,14 +214,20 @@ void MainWindow::on_confirmation_back_button_clicked() {
 void MainWindow::on_reserve_button_clicked() {
     //Check if reservation times are valid
     //Check if spot is still available
+    string temp = lots[selected_lot].getLotName() + to_string(empty_parking[selected_row].getSpaceNumber());
+    QString s = QString::fromStdString(temp);
+    ui->selected_parking_label->setText(s);
     ui->stackedWidget->setCurrentWidget(ui->confirmation);
 }
 
 void MainWindow::on_confirmation_confirm_button_clicked() {
     //Add information to vectors or database
-    ui->stackedWidget->setCurrentWidget(ui->home);
+    lots[selected_lot].reserveSpace(current_user->get_uID(), empty_parking[selected_row].getSpaceNumber(), ui->start_time_input->time().hour() - 7, ui->end_time_input->time().hour() - 7);
 
+    ui->stackedWidget->setCurrentWidget(ui->home);
     ui->success_label->setVisible(true);
+    this->set_user_information(current_user);
+    update_user_table();
     //Tell user if reservation was successful or not
 }
 
@@ -235,7 +282,7 @@ void MainWindow::on_create_user_button_clicked() {
     this->users.push_back(u);
 
     this->set_user_information(u);
-    fill_user_table();
+    update_user_table();
 
     ui->stackedWidget->setCurrentWidget(ui->home);
 }
@@ -243,5 +290,18 @@ void MainWindow::on_create_user_button_clicked() {
 
 void MainWindow::on_lot_box_input_currentIndexChanged(int index) {
     this->update_available_table(index);
+    this->selected_lot = index;
+}
+
+void MainWindow::on_available_list_clicked(const QModelIndex &index){
+    auto rowList = ui->available_list->selectionModel()->selectedRows();
+
+    if (rowList.count() > 0) {
+        this->selected_row = rowList.constFirst().row();
+    }
+
+    if (this->selected_row >= 0) {
+        cout << "Row: " << this->selected_row << endl;
+    }
 }
 

@@ -4,6 +4,7 @@
 #include <QMainWindow>
 #include <qpixmap.h>
 #include <QStandardItemModel>
+#include <QAbstractItemView>
 
 #include "headers/users/User.h"
 #include "src/parking/ParkingLotFactory.hpp"
@@ -29,10 +30,12 @@ private:
     ParkingLotFactory* factory;
     vector<ParkingLot> lots;
     vector<ParkingSpace> current_parking;
+    vector<ParkingSpace> empty_parking;
+    int selected_lot = 0, selected_row = -1;
 
+    void ui_checks();
     void setImage();
     void onStart();
-    void tempList(); //delete later
     void fill_user_table();
     void fill_reservation_table();
 
@@ -40,9 +43,11 @@ private:
     void add_user(User* user);
     User* get_user(int uID);
     void get_user(string first_name, string last_name);
+    void get_user_parking();
     //void add_parking(ParkingSpace* parking);
     void update_reservation_table();
-    void update_available_table();
+    void update_available_table(int index);
+    void update_user_table();
 
     void compare_time(const QTime &time1, const QTime &time2);
 
@@ -67,5 +72,6 @@ private slots:
     void on_create_user_button_clicked();
 
     void on_lot_box_input_currentIndexChanged(int index);
+    void on_available_list_clicked(const QModelIndex &index);
 };
 #endif // MAINWINDOW_H

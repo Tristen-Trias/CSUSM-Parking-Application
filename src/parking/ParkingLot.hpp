@@ -54,6 +54,10 @@ vector<ParkingSpace> getEmptySpaces() // returns empty spaces in vector
     return empty;
 }
 
+string getLotName() {
+    return lotName;
+}
+
   
     void display() override  // diplay information regarding the parking lot
     {

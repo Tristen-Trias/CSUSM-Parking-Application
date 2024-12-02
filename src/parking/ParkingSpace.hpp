@@ -11,7 +11,7 @@ class ParkingSpace : public Parking{
  static const int totalTimeSlots = 17; // numbrt of time slots from reservation 7am-12am
  bool timeSlots[totalTimeSlots]; //  creates bool array of total hours of time reservation
  bool isSpaceEmpty;
- int  reservationEndTime;
+ int  reservationEndTime, reservationStartTime;
  int userID;
  
 
@@ -54,6 +54,11 @@ public:
     int getReservationEndTime()
     {
         return reservationEndTime;
+    }
+
+    int getReservationStartTime()
+    {
+        return reservationStartTime;
     }
     
     void setSpaceNumber(int number) // sets space number
@@ -102,6 +107,7 @@ public:
 
     userID = id;
     reservationEndTime = endTime + 7;
+    reservationStartTime = startTime + 7;
     cout << "Parking Space " << spaceNumber << " reserved by id: " << userID <<" for " << startTime + 7 << ":00"
          << " through " << endTime + 7 << ":00." << endl;
 
