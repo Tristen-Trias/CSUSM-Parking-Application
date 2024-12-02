@@ -24,7 +24,10 @@ if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)
         MANUAL_FINALIZATION
         ${PROJECT_SOURCES}
 
-        headers/parking/AdminParking.h headers/parking/FacultyParking.h headers/parking/Parking.h headers/parking/ParkingFactory.h headers/parking/ParkingLot.h headers/parking/ParkingSection.h headers/parking/ParkingSpace.h headers/parking/StudentParking.h headers/parking/VisitorParking.h headers/users/Admin.h headers/users/Faculty.h headers/users/Student.h headers/users/User.h headers/users/Visitor.h src/parking/Parking.cpp src/parking/ParkingFactory.cpp src/parking/ParkingLot.cpp src/parking/ParkingSection.cpp src/parking/ParkingSpace.cpp src/users/Admin.cpp src/users/Faculty.cpp src/users/Student.cpp src/users/User.cpp src/users/Visitor.cpp
+        src/users/User.cpp
+        headers/users/User.h
+        assets.qrc
+        src/parking/ParkingAbstract.hpp src/parking/ParkingLot.hpp src/parking/ParkingLotDecorator.hpp src/parking/ParkingLotFactory.hpp src/parking/ParkingSpace.hpp
     )
 # Define target properties for Android with Qt 6 as:
 #    set_property(TARGET CSUSM_Parking APPEND PROPERTY QT_ANDROID_PACKAGE_SOURCE_DIR

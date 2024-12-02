@@ -6,7 +6,7 @@
 #include <QStandardItemModel>
 
 #include "headers/users/User.h"
-#include "headers/parking/ParkingSpace.h"
+#include "src/parking/ParkingLotFactory.hpp"
 
 QT_BEGIN_NAMESPACE
 namespace Ui {
@@ -24,17 +24,25 @@ public:
 
 private:
     Ui::MainWindow *ui;
+    vector<User*> users;
+    User* current_user;
+    ParkingLotFactory* factory;
+    vector<ParkingLot> lots;
+    vector<ParkingSpace> current_parking;
+
     void setImage();
     void onStart();
     void tempList(); //delete later
     void fill_user_table();
     void fill_reservation_table();
-    vector<User*> users;
-    vector<ParkingSpace*> current_parking;
 
-    void set_user_information(/*User* user*/);
+    void set_user_information(User* user);
     void add_user(User* user);
-    void add_parking(ParkingSpace* parking);
+    User* get_user(int uID);
+    void get_user(string first_name, string last_name);
+    //void add_parking(ParkingSpace* parking);
+    void update_reservation_table();
+    void update_available_table();
 
     void compare_time(const QTime &time1, const QTime &time2);
 
@@ -54,5 +62,10 @@ private slots:
     void on_date_edit_userDateChanged(const QDate &date);
     void on_start_time_input_userTimeChanged(const QTime &time);
     void on_end_time_input_userTimeChanged(const QTime &time);
+    void on_new_user_button_clicked();
+    void on_back_login_clicked();
+    void on_create_user_button_clicked();
+
+    void on_lot_box_input_currentIndexChanged(int index);
 };
 #endif // MAINWINDOW_H
