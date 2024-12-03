@@ -5,9 +5,9 @@
 using namespace std;
 
 class ParkingStrategy {
-    public:
-        // pur virtual fxn defines interface for parking behavior
-        virtual void park() = 0;  
+   public:
+    // pur virtual fxn defines interface for parking behavior
+    virtual void park() = 0;
 };
 
 #endif

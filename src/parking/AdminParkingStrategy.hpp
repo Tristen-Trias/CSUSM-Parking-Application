@@ -3,17 +3,11 @@
 
 #include "ParkingStrategy.hpp"
 
-class AdminParkingStrategy : public ParkingStrategy 
-{
-    public:
-        void park() override 
-        {
-            cout << "Implementing administrator parking strategy\n";
-            
-
-
-            
-        }
+class AdminParkingStrategy : public ParkingStrategy {
+   public:
+    void park() override {
+        cout << "Implementing administrator parking strategy\n";
+    }
 };
 
 #endif
