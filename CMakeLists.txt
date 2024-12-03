@@ -28,6 +28,7 @@ if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)
         headers/users/User.h
         assets.qrc
         src/parking/ParkingAbstract.hpp src/parking/ParkingLot.hpp src/parking/ParkingLotDecorator.hpp src/parking/ParkingLotFactory.hpp src/parking/ParkingSpace.hpp
+        src/parking/AdminParkingStrategy.hpp src/parking/FacultyParkingStrategy.hpp  src/parking/Observer.hpp src/parking/ParkingAbstract.hpp src/parking/ParkingLot.hpp src/parking/ParkingLotDecorator.hpp src/parking/ParkingLotFactory.hpp src/parking/ParkingSpace.hpp src/parking/ParkingStrategy.hpp src/parking/StudentParkingStrategy.hpp
     )
 # Define target properties for Android with Qt 6 as:
 #    set_property(TARGET CSUSM_Parking APPEND PROPERTY QT_ANDROID_PACKAGE_SOURCE_DIR

@@ -15,6 +15,7 @@ MainWindow::~MainWindow() {
 
 void MainWindow::onStart() {
     setImage();
+    this->setWindowTitle(QString::fromStdString("CSUSM Parking Application"));
     ui_checks();
 
     this->fill_test_information();
@@ -26,8 +27,10 @@ void MainWindow::ui_checks() {
     ui->invalid_time_label->setVisible(false);
     ui->success_label->setVisible(false);
     ui->invalid_login_label->setVisible(false);
+    ui->invalid1->setVisible(false);
+    ui->invalid2->setVisible(false);
+    ui->invalid3->setVisible(false);
     ui->reservations_table->verticalHeader()->hide();
-
 
     QTime* minTime = new QTime(7, 0, 0);
     QTime* maxTime = new QTime(23, 0, 0);
@@ -38,6 +41,19 @@ void MainWindow::ui_checks() {
     ui->available_list->verticalHeader()->hide();
     ui->available_list->setSelectionBehavior(QAbstractItemView::SelectRows);
     ui->available_list->setSelectionMode(QAbstractItemView::SingleSelection);
+
+    ui->reservations_table->verticalHeader()->hide();
+    ui->reservations_table->setSelectionBehavior(QAbstractItemView::SelectRows);
+    ui->reservations_table->setSelectionMode(QAbstractItemView::SingleSelection);
+
+    ui->text_box_username->clear();
+    ui->create_first_name->clear();
+    ui->create_last_name->clear();
+    ui->create_user_id->clear();
+
+    ui->delete_reservation_button->hide();
+    ui->create_parking_button->hide();
+
 }
 
 void MainWindow::setImage() {
@@ -117,6 +133,12 @@ void MainWindow::set_user_information(User* user) {
     ui->rating_label->setText(rating);
 
     get_user_parking();
+
+    if (uID.toInt() == 3) {
+        ui->create_parking_button->show();
+    }
+
+
 }
 
 void MainWindow::get_user_parking() {
@@ -144,12 +166,30 @@ User* MainWindow::get_user(int uID) {
 }
 
 void MainWindow::update_reservation_table() {
+    QStandardItemModel* model = new QStandardItemModel(current_parking.size(), 4, this);
+    ui->reservations_table->setModel(model);
 
+    model->setHorizontalHeaderLabels(QStringList() << "Lot" << "Space Number" << "Start Time" << "End Time");
+
+    QStandardItemModel* list = new QStandardItemModel(lots.size(), 2, this);
+    ui->lot_box_input->setModel(list);
+
+    for (int i = 0; i < current_parking.size(); i++) {
+        model->setItem(i, 0, new QStandardItem(QString::fromStdString(current_parking[i].getLot())));
+        model->setItem(i, 1, new QStandardItem(QString::number(current_parking[i].getSpaceNumber())));
+
+        QTime start = QTime(current_parking[i].getReservationStartTime(), 0, 0);
+        QTime end = QTime(current_parking[i].getReservationEndTime(), 0, 0);
+
+        model->setItem(i, 2, new QStandardItem(start.toString()));
+        model->setItem(i, 3, new QStandardItem(end.toString()));
+    }
 }
 
 void MainWindow::update_available_table(int index) {
     vector<ParkingSpace> empty = lots[index].getEmptySpaces();
     QStandardItemModel* model = new QStandardItemModel(empty.size(), 2, this);
+
     ui->available_list->setModel(model);
 
     model->setHorizontalHeaderLabels(QStringList() << "Lot" << "Space Number");
@@ -162,6 +202,14 @@ void MainWindow::update_available_table(int index) {
     this->empty_parking = empty;
 }
 
+bool MainWindow::search_uID(int n) {
+    for (int i = 0; i < users.size(); i++) {
+        if (users[i]->get_uID() == n) {
+            return true;
+        }
+    }
+    return false;
+}
 
 
 //Slots
@@ -199,6 +247,7 @@ void MainWindow::on_back_home_clicked() {
 void MainWindow::on_logout_button_clicked() {
     current_user = nullptr;
     current_parking.clear();
+
     ui_checks();
     ui->stackedWidget->setCurrentWidget(ui->login);
 }
@@ -279,21 +328,55 @@ void MainWindow::on_create_user_button_clicked() {
     int uID = ui->create_user_id->toPlainText().toInt();
     int type = ui->create_user_type->value();
 
-    cout << "Button clicked" << endl;
+    if (first.empty()) {
+        ui->invalid1->setVisible(true);
+    } else {
+        ui->invalid1->setVisible(false);
+    }
 
-    User* u = new User(first, last, uID, false, type);
-    this->users.push_back(u);
+    if (last.empty()) {
+        ui->invalid2->setVisible(true);
+    } else {
+        ui->invalid2->setVisible(false);
+    }
 
-    this->set_user_information(u);
-    update_user_table();
+    if (search_uID(uID)) {
+        ui->invalid3->setVisible(true);
+    } else {
+        ui->invalid3->setVisible(false);
+    }
 
-    ui->stackedWidget->setCurrentWidget(ui->home);
+    bool invalid = first.empty() || last.empty() || search_uID(uID);
+
+    if (!invalid) {
+        ui->stackedWidget->setCurrentWidget(ui->home);
+
+        User* u = new User(first, last, uID, false, type);
+        this->users.push_back(u);
+
+        this->set_user_information(u);
+        update_user_table();
+    }
 }
 
 
 void MainWindow::on_lot_box_input_currentIndexChanged(int index) {
     this->update_available_table(index);
     this->selected_lot = index;
+}
+
+void MainWindow::on_reservations_table_clicked(const QModelIndex &index) {
+    auto rowList = ui->reservations_table->selectionModel()->selectedRows();
+
+    if (rowList.count() > 0) {
+        this->selected_row = rowList.constFirst().row();
+    }
+
+    if (this->selected_row >= 0) {
+        cout << "Row: " << this->selected_row << endl;
+    }
+
+    cout << "click" << endl;
 }
 
 void MainWindow::on_available_list_clicked(const QModelIndex &index){
@@ -306,5 +389,29 @@ void MainWindow::on_available_list_clicked(const QModelIndex &index){
     if (this->selected_row >= 0) {
         cout << "Row: " << this->selected_row << endl;
     }
+}
+
+
+void MainWindow::on_delete_reservation_button_clicked() {
+    lots[selected_lot].clearSpace(current_parking[selected_row].getSpaceNumber());
+
+    this->set_user_information(current_user);
+    update_reservation_table();
+}
+
+
+void MainWindow::on_done_button_clicked() {
+    string s = ui->create_parking_box->toPlainText().toStdString();
+    int num = ui->num_spaces_box->toPlainText().toInt();
+
+    ParkingLot newLot = factory->createParkingLot(s, num);
+    lots.push_back(newLot);
+
+    ui->stackedWidget->setCurrentWidget(ui->home);
+}
+
+
+void MainWindow::on_create_parking_button_clicked(){
+    ui->stackedWidget->setCurrentWidget(ui->admin);
 }
 
